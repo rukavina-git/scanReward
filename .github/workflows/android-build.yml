@@ -24,6 +24,10 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      # Set executable permission for gradlew
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       # Cache Gradle dependencies
       - name: Cache Gradle packages
         uses: actions/cache@v3
