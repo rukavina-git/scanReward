@@ -44,6 +44,13 @@ jobs:
       - name: Create google-services.json
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > ./app/src/google-services.json
 
+      - name: Validate google-services.json
+        run: |
+          cat ./app/src/google-services.json
+          wc -l ./app/src/google-services.json
+          jq . ./app/src/google-services.json  # Requires jq, outputs JSON structure
+
+
       # Run the Gradle build
       - name: Build with Gradle
         run: ./gradlew assembleDebug
