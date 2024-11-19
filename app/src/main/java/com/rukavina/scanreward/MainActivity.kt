@@ -8,16 +8,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebaseApp
 import com.rukavina.scanreward.navigation.NavigationGraph
 import com.rukavina.scanreward.ui.theme.ScanRewardTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContent {
             val navController = rememberNavController()
             NavigationGraph(navController = navController)
         }
+        throw RuntimeException("Test Crash")
     }
 }
 
