@@ -19,3 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Firebase Analytics
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+
+# Firebase Performance Monitoring
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keepclassmembers class ** {
+    @com.google.firebase.perf.metrics.AddTrace <methods>;
+}
+-keep public class com.google.firebase.perf.** { *; }
+-dontwarn com.google.firebase.perf.**
