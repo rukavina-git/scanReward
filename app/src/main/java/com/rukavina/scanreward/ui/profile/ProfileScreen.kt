@@ -1,4 +1,4 @@
-package com.rukavina.scanreward.ui.scan
+package com.rukavina.scanreward.ui.profile
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ScanScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = androidx.compose.ui.Alignment.Center
     ) {
-        Text(text = "Scan Screen")
+        Text(text = "Profile Screen")
     }
 }
