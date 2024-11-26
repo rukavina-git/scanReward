@@ -5,18 +5,52 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.rukavina.scanreward.auth.presentation.LoginScreen
+import com.rukavina.scanreward.auth.presentation.RegisterScreen
 import com.rukavina.scanreward.ui.home.HomeScreen
 import com.rukavina.scanreward.ui.journey.JourneyScreen
 import com.rukavina.scanreward.ui.rewards.RewardsScreen
 import com.rukavina.scanreward.ui.profile.ProfileScreen
 
 @Composable
-fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modifier) {
+fun NavigationGraph(
+    navController: NavHostController,
+    isAuthenticated: Boolean,
+    modifier: Modifier = Modifier
+) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route,
+        startDestination = if (isAuthenticated) Screen.Home.route else Screen.Login.route,
         modifier = modifier
     ) {
+        // Auth Screens
+        composable(Screen.Login.route) {
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true } // Clear login screen from stack
+                    }
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.Register.route)
+                }
+            )
+        }
+
+        composable(Screen.Register.route) {
+            RegisterScreen(
+                onRegisterSuccess = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Register.route) { inclusive = true } // Clear register screen from stack
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // Main Screens (Only shown if authenticated)
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }
@@ -33,6 +67,11 @@ fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modif
 }
 
 sealed class Screen(val route: String) {
+    // Auth Screens
+    data object Login : Screen("login")
+    data object Register : Screen("register")
+
+    // Main App Screens
     data object Home : Screen("home")
     data object Journey : Screen("journey")
     data object Rewards : Screen("rewards")
