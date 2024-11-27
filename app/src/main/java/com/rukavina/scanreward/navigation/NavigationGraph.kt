@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.rukavina.scanreward.auth.presentation.LoginScreen
 import com.rukavina.scanreward.auth.presentation.RegisterScreen
+import com.rukavina.scanreward.auth.presentation.ResetPasswordScreen
 import com.rukavina.scanreward.ui.home.HomeScreen
 import com.rukavina.scanreward.ui.journey.JourneyScreen
 import com.rukavina.scanreward.ui.rewards.RewardsScreen
@@ -28,11 +29,16 @@ fun NavigationGraph(
             LoginScreen(
                 onLoginSuccess = {
                     navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true } // Clear login screen from stack
+                        popUpTo(Screen.Login.route) {
+                            inclusive = true
+                        } // Clear login screen from stack
                     }
                 },
                 onNavigateToRegister = {
                     navController.navigate(Screen.Register.route)
+                },
+                onResetPassword = {
+                    navController.navigate(Screen.ResetPassword.route)
                 }
             )
         }
@@ -41,7 +47,9 @@ fun NavigationGraph(
             RegisterScreen(
                 onRegisterSuccess = {
                     navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Register.route) { inclusive = true } // Clear register screen from stack
+                        popUpTo(Screen.Register.route) {
+                            inclusive = true
+                        } // Clear register screen from stack
                     }
                 },
                 onNavigateToLogin = {
@@ -50,7 +58,18 @@ fun NavigationGraph(
             )
         }
 
-        // Main Screens (Only shown if authenticated)
+        composable(Screen.ResetPassword.route) {
+            ResetPasswordScreen(
+                onResetSuccess = {
+                    navController.popBackStack()  // Pop current screen from stack
+                },
+                onCancel = {
+                    navController.popBackStack()  // Cancel and pop back
+                }
+            )
+        }
+
+        // Main Screens
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }
@@ -70,6 +89,7 @@ sealed class Screen(val route: String) {
     // Auth Screens
     data object Login : Screen("login")
     data object Register : Screen("register")
+    data object ResetPassword : Screen("resetPassword")
 
     // Main App Screens
     data object Home : Screen("home")

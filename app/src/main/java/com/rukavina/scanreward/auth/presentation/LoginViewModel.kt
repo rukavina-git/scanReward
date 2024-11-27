@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.rukavina.scanreward.auth.domain.LoginUseCase
+import com.rukavina.scanreward.auth.domain.ResetPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,8 +42,7 @@ class LoginViewModel @Inject constructor(
             _loginState.value = if (result.isSuccess) {
                 LoginState.Success
             } else {
-                val exception = result.exceptionOrNull()
-                val errorMessage = when (exception) {
+                val errorMessage = when (val exception = result.exceptionOrNull()) {
                     is FirebaseAuthInvalidCredentialsException -> "Incorrect email or password. Please try again."
                     is FirebaseAuthInvalidUserException -> "This email is not registered. Please check your email or register."
                     is FirebaseAuthUserCollisionException -> "This email is already registered. Try logging in."

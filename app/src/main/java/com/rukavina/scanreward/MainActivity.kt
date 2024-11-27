@@ -42,4 +42,10 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        // Sign out the user when the app is stopped
+        FirebaseAuth.getInstance().signOut()
+    }
 }
